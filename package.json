@@ -1,0 +1,36 @@
+{
+  "name": "ma-utils-extension",
+  "displayName": "MA Utils Extension",
+  "description": "Extension for MA Utils",
+  "version": "0.0.1",
+  "publisher": "Asaf-Meizner",
+  "engines": {
+      "vscode": "^1.63.0"
+  },
+  "categories": [
+      "Other"
+  ],
+  "activationEvents": [
+      "onCommand:extension.initiate-Ma"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+      "commands": [
+          {
+              "command": "extension.initiate-Ma",
+              "title": "Initiate Ma Project"
+          }
+      ]
+  },
+  "scripts": {
+      "vscode:prepublish": "npm run compile",
+      "compile": "tsc -p ./",
+      "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+      "typescript": "^4.5.5",
+      "@types/node": "^14.14.41",
+      "tslint": "^6.1.3",
+      "vscode": "^1.1.37"
+  }
+}
