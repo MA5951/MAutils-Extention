@@ -9,7 +9,8 @@ function initiateMa() {
 
         const maFiles = [	
             {
-                fileName: 'MaMotorCommand.java',
+                fileName: 'src/MaMotorCommand.java',
+                // get the content from MAlib-files/src/MaMotorCommand.java //TODO
                 content: '/* Your code for MaMotorCommand here */'
             },
             {
@@ -20,11 +21,21 @@ function initiateMa() {
         ];
 
         maFiles.forEach(file => {
-            fs.writeFileSync(
-                vscode.Uri.joinPath(workspaceFolder.uri, file.fileName).fsPath,
-                file.content,
-                'utf-8'
-            );
+            //check if folder file is in exists if not create the folder than the file in it
+            for (let i = 0; i < file.fileName.split('/').length - 1; i++) {
+                if (!fs.existsSync(vscode.Uri.joinPath(workspaceFolder.uri, file.fileName.split('/')[i]).fsPath)) {
+                    fs.mkdirSync(vscode.Uri.joinPath(workspaceFolder.uri, file.fileName.split('/')[i]).fsPath);
+                }
+            }
+
+            if (!fs.existsSync(vscode.Uri.joinPath(workspaceFolder.uri, file.fileName).fsPath)) {
+                //create file
+                fs.writeFileSync(
+                    vscode.Uri.joinPath(workspaceFolder.uri, file.fileName).fsPath,
+                    file.content,
+                    'utf-8'
+                );
+            }
         });
 
         vscode.window.showInformationMessage('Ma files created successfully!');
@@ -33,8 +44,13 @@ function initiateMa() {
     }
 }
 
+function HelloWorld() {
+    vscode.window.showInformationMessage('Hello World!');
+}
+
 export function activate(context: vscode.ExtensionContext) {
-    let disposable = vscode.commands.registerCommand('extension.initiate-Ma', initiateMa);
+    let disposable = vscode.commands.registerCommand('MAutils-extention.extension.initiate-Ma', initiateMa);
+    let disposable2 = vscode.commands.registerCommand('MAutils-extention.extension.Hello-world', HelloWorld);
 
     context.subscriptions.push(disposable);
 }
