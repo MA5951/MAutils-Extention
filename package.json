@@ -2,7 +2,7 @@
   "name": "mautils-extention",
   "displayName": "MAutils-Extention",
   "description": "An extention to go hand to hand with MAutils",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "engines": {
     "vscode": "^1.84.0"
   },
