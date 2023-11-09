@@ -16,6 +16,7 @@ Find the extension in the search results and click the "Install" button.
 * **Initiate Files from MAutils:** This command copies files from the "MAlibRobotFiles" directory within the MAutils repository into your workspace. It also supports copying files from subdirectories.
 * **Pull Updates to MAutils:** This command performs a git pull operation within the MAutils directory to fetch and apply updates from the repository.
 * **Auto Initiate MA:** This command combines the functionality of cloning the MAutils repository and initiating files in one step.
+* **Create MA File**: Quickly create new MAutil files using predefined templates.
 
 ## Usage
 **1. Clone MAutils:**
@@ -37,6 +38,12 @@ Find the extension in the search results and click the "Install" button.
 * Open Visual Studio Code.
 * Open a workspace.
 * Use the command palette (Ctrl+Shift+P or Cmd+Shift+P on Mac) and select "Auto Initiate MA". This command combines cloning the MAutils repository and initiating files in one step.
+
+**5. To create a new MAutil file:**
+
+* Right-click on a folder in the Explorer panel.
+* Select "Create MA File".
+* Choose the type of MAutil file you want to create and provide a name.
 
 ## Requirements
 * Visual Studio Code
