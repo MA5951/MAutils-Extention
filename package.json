@@ -14,30 +14,43 @@
   "contributes": {
     "commands": [
       {
-        "command": "MAutils-extention.extension.initiate-Ma",
-        "title": "Initiate MA"
-      },
-      {
-        "command": "MAutils-extention.extension.Hello-world",
-        "title": "Hello World"
-      },
-      {
         "command": "MAutils-extention.extension.auto-initiate-Ma",
-        "title": "Auto Initiate MA"
+        "title": "MAutils: Auto Initiate MA"
       },
       {
         "command": "MAutils-extention.extension.clone-MAutils",
-        "title": "Clone MAutils"
+        "title": "MAutils: Clone MAutils"
       },
       {
         "command": "MAutils-extention.extension.initiate-files-from-MAutils",
-        "title": "Initiate files from MAutils"
+        "title": "MAutils: Initiate files from MAutils"
       },
       {
         "command": "MAutils-extention.extension.pull-updates-to-MAutils",
-        "title": "Pull updates to MAutils"
+        "title": "MAutils: Pull updates to MAutils"
+      },
+      {
+        "command": "extension.createMAFile",
+        "title": "Create MA File",
+        "category": "MAutils"
       }
-    ]
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "extension.createMAFile",
+          "when": "explorerResourceIsFolder",
+          "group": "navigation@0"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "extension.createMAFile",
+          "when": "editorLangId == 'java'",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
