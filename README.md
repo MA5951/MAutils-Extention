@@ -1,7 +1,7 @@
 # MAutils Extension
 
 ## Overview
-The MAutils Extension is a Visual Studio Code extension designed to streamline the development process for FRC robotics teams using the Wpilib Java library along with a custom library called "MAutils". This extension provides convenient commands to clone the MAutils repository, initiate files, and pull updates.
+The MAutils Extension is a Visual Studio Code extension made by FRC team Makers Assemble 5951 designed to streamline the development process for FRC robotics teams using the Wpilib Java library along with our custom library called "MAutils". This extension provides convenient commands to clone the MAutils repository, initiate files, and pull updates.
 
 ## Features
 * **Clone MAutils:** This command allows you to clone the MAutils repository into the specified directory within your workspace.
