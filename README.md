@@ -1,71 +1,45 @@
-# mautils-extention README
+# MAutils Extension
 
-This is the README for your extension "mautils-extention". After writing up a brief description, we recommend including the following sections.
+##Overview
+The MAutils Extension is a Visual Studio Code extension designed to streamline the development process for FRC robotics teams using the Wpilib Java library along with a custom library called "MAutils". This extension provides convenient commands to clone the MAutils repository, initiate files, and pull updates.
 
-## Features
+##Features
+* **Clone MAutils:** This command allows you to clone the MAutils repository into the specified directory within your workspace.
+* **Initiate Files from MAutils:** This command copies files from the "MAlibRobotFiles" directory within the MAutils repository into your workspace. It also supports copying files from subdirectories.
+* **Pull Updates to MAutils:** This command performs a git pull operation within the MAutils directory to fetch and apply updates from the repository.
+* **Auto Initiate MA:** This command combines the functionality of cloning the MAutils repository and initiating files in one step.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+##Usage
+**1. Clone MAutils:**
+* Open Visual Studio Code.
+* Open a workspace.
+* Use the command palette (Ctrl+Shift+P or Cmd+Shift+P on Mac) and select "Clone MAutils". This will clone the MAutils repository into the specified directory.
 
-For example if there is an image subfolder under your extension project workspace:
+**2. Initiate Files from MAutils:**
+* Open Visual Studio Code.
+* Open a workspace.
+* Use the command palette (Ctrl+Shift+P or Cmd+Shift+P on Mac) and select "Initiate Files from MAutils". This will copy files from the "MAlibRobotFiles" directory within the MAutils repository into your workspace.
 
-\!\[feature X\]\(images/feature-x.png\)
+**3. Pull Updates to MAutils:**
+* Open Visual Studio Code.
+* Open a workspace.
+* Use the command palette (Ctrl+Shift+P or Cmd+Shift+P on Mac) and select "Pull Updates to MAutils". This will perform a git pull operation within the MAutils directory to fetch and apply updates.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+**4. Auto Initiate MA:**
+* Open Visual Studio Code.
+* Open a workspace.
+* Use the command palette (Ctrl+Shift+P or Cmd+Shift+P on Mac) and select "Auto Initiate MA". This command combines cloning the MAutils repository and initiating files in one step.
 
-## Requirements
+##Requirements
+* Visual Studio Code
+* Git (must be installed and accessible from the command line)
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+##Known Issues
+* None at the moment.
 
-## Extension Settings
+##Contributing
+If you find any issues or have suggestions for improvements, please open an issue or submit a pull request on the [GitHub repository](https://github.com/AsafMeizner/MAutils-Extention).
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+License
+This extension is licensed under the [MIT License](https://github.com/AsafMeizner/MAutils-Extention/blob/master/LICENSE).
 
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
