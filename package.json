@@ -3,7 +3,7 @@
   "displayName": "MAutils",
   "description": "An extention to go hand to hand with MAutils",
   "publisher": "MakersAssemble",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "icon": "logo.png",
   "engines": {
     "vscode": "^1.84.0"
