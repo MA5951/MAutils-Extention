@@ -38,8 +38,8 @@ The MAutils Extension is a Visual Studio Code extension designed to streamline t
 * None at the moment.
 
 ## Contributing
-If you find any issues or have suggestions for improvements, please open an issue or submit a pull request on the [GitHub repository](https://github.com/AsafMeizner/MAutils-Extention).
+If you find any issues or have suggestions for improvements, please open an issue or submit a pull request on the [GitHub repository](https://github.com/MA5951/MAutils-Extention).
 
 ## License
-This extension is licensed under the [MIT License](https://github.com/AsafMeizner/MAutils-Extention/blob/master/LICENSE).
+This extension is licensed under the [MIT License](https://github.com/MA5951/MAutils-Extention/blob/master/LICENSE).
 
