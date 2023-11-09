@@ -166,11 +166,6 @@ function createMAFile(uri: vscode.Uri) {
     });
 }
 
-function showMACommands() {
-    vscode.commands.executeCommand('workbench.action.quickOpen', 'MAutils:');
-}
-
-
 export function activate(context: vscode.ExtensionContext) {
     let disposable = vscode.commands.registerCommand('MAutils-extention.extension.auto-initiate-Ma', autoInitiateMa);
     let disposable2 = vscode.commands.registerCommand('MAutils-extention.extension.clone-MAutils', cloneMAutils);
