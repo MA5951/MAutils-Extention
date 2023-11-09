@@ -3,6 +3,14 @@
 ## Overview
 The MAutils Extension is a Visual Studio Code extension made by FRC team Makers Assemble 5951 designed to streamline the development process for FRC robotics teams using the Wpilib Java library along with our custom library called "MAutils". This extension provides convenient commands to clone the MAutils repository, initiate files, and pull updates.
 
+## Installation
+You can install the MAutils Extension by searching for "MAutils" on the Visual Studio Code Marketplace.
+
+1. Open Visual Studio Code.
+2. Go to the Extensions view by clicking on the square icon on the left sidebar or pressing Ctrl+Shift+X (Windows/Linux) or 3. Cmd+Shift+X (Mac).
+3. Search for "MAutils" in the search bar.
+Find the extension in the search results and click the "Install" button.
+
 ## Features
 * **Clone MAutils:** This command allows you to clone the MAutils repository into the specified directory within your workspace.
 * **Initiate Files from MAutils:** This command copies files from the "MAlibRobotFiles" directory within the MAutils repository into your workspace. It also supports copying files from subdirectories.
