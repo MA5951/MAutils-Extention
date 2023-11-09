@@ -20,6 +20,22 @@
       {
         "command": "MAutils-extention.extension.Hello-world",
         "title": "Hello World"
+      },
+      {
+        "command": "MAutils-extention.extension.auto-initiate-Ma",
+        "title": "Auto Initiate MA"
+      },
+      {
+        "command": "MAutils-extention.extension.clone-MAutils",
+        "title": "Clone MAutils"
+      },
+      {
+        "command": "MAutils-extention.extension.initiate-files-from-MAutils",
+        "title": "Initiate files from MAutils"
+      },
+      {
+        "command": "MAutils-extention.extension.pull-updates-to-MAutils",
+        "title": "Pull updates to MAutils"
       }
     ]
   },

@@ -1,47 +1,102 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
+import * as path from 'path';
+import * as cp from 'child_process';
 
-function initiateMa() {
+function autoInitiateMa() {
+    cloneMAutils();
+    initiateFilesFromMAutils();
+}
+
+function cloneMAutils() {
     const workspaceFolders = vscode.workspace.workspaceFolders;
 
-    if (workspaceFolders && workspaceFolders.length > 0) {
-        const workspaceFolder = workspaceFolders[0]; // Assumes single workspace folder
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+        vscode.window.showErrorMessage('No workspace folder found. Please open a workspace before running this command.');
+        return;
+    }
 
-        const maFiles = [	
-            {
-                fileName: 'src/MaMotorCommand.java',
-                // get the content from MAlib-files/src/MaMotorCommand.java //TODO
-                content: '/* Your code for MaMotorCommand here */'
-            },
-            {
-                fileName: 'swerveDrive.java',
-                content: '/* Your code for swerveDrive here */'
-            },
-            // Add more files as needed
-        ];
+    const targetDir = path.join(workspaceFolders[0].uri.fsPath, "src", "main", "java", "com", "ma5951", "MAutils");
 
-        maFiles.forEach(file => {
-            //check if folder file is in exists if not create the folder than the file in it
-            for (let i = 0; i < file.fileName.split('/').length - 1; i++) {
-                if (!fs.existsSync(vscode.Uri.joinPath(workspaceFolder.uri, file.fileName.split('/')[i]).fsPath)) {
-                    fs.mkdirSync(vscode.Uri.joinPath(workspaceFolder.uri, file.fileName.split('/')[i]).fsPath);
-                }
-            }
+    if (fs.existsSync(targetDir)) {
+        vscode.window.showWarningMessage(`Directory '${targetDir}' already exists. Skipping clone.`);
+        return;
+    }
 
-            if (!fs.existsSync(vscode.Uri.joinPath(workspaceFolder.uri, file.fileName).fsPath)) {
-                //create file
-                fs.writeFileSync(
-                    vscode.Uri.joinPath(workspaceFolder.uri, file.fileName).fsPath,
-                    file.content,
-                    'utf-8'
-                );
+    // Create the target directory if it doesn't exist
+    if (!fs.existsSync(path.dirname(targetDir))) {
+        fs.mkdirSync(path.dirname(targetDir), { recursive: true });
+    }
+
+    // Now attempt to clone the repository
+    cp.exec(`git clone https://github.com/MA5951/MAutils.git`, { cwd: path.dirname(targetDir) }, (err, stdout, stderr) => {
+        if (err) {
+            vscode.window.showErrorMessage(`Error cloning repository: ${err.message}`);
+            return;
+        }
+
+        vscode.window.showInformationMessage(`MAutils repository cloned successfully to '${targetDir}'.`);
+    });
+}
+
+function initiateFilesFromMAutils() {
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+        vscode.window.showErrorMessage('No workspace folder found. Please open a workspace before running this command.');
+        return;
+    }
+
+    const sourceDir = path.join(workspaceFolders[0].uri.fsPath, "src", "main", "java", "com", "ma5951", "MAutils", "MAlibRobotFiles");
+
+    if (!fs.existsSync(sourceDir)) {
+        vscode.window.showErrorMessage(`Source directory '${sourceDir}' not found. Make sure the repository is cloned.`);
+        return;
+    }
+
+    function copyFiles(source: string, target: string) {
+        fs.readdirSync(source).forEach(file => {
+            const sourceFile = path.join(source, file);
+            const targetFile = path.join(target, file);
+
+            if (fs.lstatSync(sourceFile).isDirectory()) {
+                fs.mkdirSync(targetFile, { recursive: true });
+                copyFiles(sourceFile, targetFile); // Recursively copy subdirectories
+            } else {
+                fs.copyFileSync(sourceFile, targetFile);
+                vscode.window.showInformationMessage(`File '${file}' copied to workspace.`);
             }
         });
-
-        vscode.window.showInformationMessage('Ma files created successfully!');
-    } else {
-        vscode.window.showErrorMessage('No workspace folder found. Please open a workspace before running this command.');
     }
+
+    copyFiles(sourceDir, workspaceFolders[0].uri.fsPath);
+    vscode.window.showInformationMessage('Auto-initiation of MA complete.');
+}
+
+function pullUpdatesToMAutils() {
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+        vscode.window.showErrorMessage('No workspace folder found. Please open a workspace before running this command.');
+        return;
+    }
+
+    const targetDir = path.join(workspaceFolders[0].uri.fsPath, "src", "main", "java", "com", "ma5951", "MAutils");
+
+    if (!fs.existsSync(targetDir)) {
+        vscode.window.showErrorMessage(`Directory '${targetDir}' not found. Make sure the repository is cloned.`);
+        return;
+    }
+
+    // Perform a git pull operation
+    cp.exec('git pull', { cwd: targetDir }, (err, stdout, stderr) => {
+        if (err) {
+            vscode.window.showErrorMessage(`Error pulling updates: ${err.message}`);
+            return;
+        }
+
+        vscode.window.showInformationMessage('Updates pulled successfully.');
+    });
 }
 
 function HelloWorld() {
@@ -49,8 +104,15 @@ function HelloWorld() {
 }
 
 export function activate(context: vscode.ExtensionContext) {
-    let disposable = vscode.commands.registerCommand('MAutils-extention.extension.initiate-Ma', initiateMa);
     let disposable2 = vscode.commands.registerCommand('MAutils-extention.extension.Hello-world', HelloWorld);
+    let disposable3 = vscode.commands.registerCommand('MAutils-extention.extension.auto-initiate-Ma', autoInitiateMa);
+    let disposable4 = vscode.commands.registerCommand('MAutils-extention.extension.clone-MAutils', cloneMAutils);
+    let disposable5 = vscode.commands.registerCommand('MAutils-extention.extension.initiate-files-from-MAutils', initiateFilesFromMAutils);
+    let disposable = vscode.commands.registerCommand('MAutils-extention.extension.pull-updates-to-MAutils', pullUpdatesToMAutils);
 
+    context.subscriptions.push(disposable2);
+    context.subscriptions.push(disposable3);
+    context.subscriptions.push(disposable4);
+    context.subscriptions.push(disposable5);
     context.subscriptions.push(disposable);
 }
