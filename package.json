@@ -4,7 +4,7 @@
   "description": "An extention to go hand to hand with MAutils",
   "publisher": "MakersAssemble",
   "version": "0.0.8",
-  "icon": "logo.png",
+  "icon": "icons/logo.png",
   "engines": {
     "vscode": "^1.84.0"
   },
@@ -35,6 +35,12 @@
         "command": "extension.createMAFile",
         "title": "Create MA File",
         "category": "MAutils"
+      },
+
+
+      {
+        "command": "extension.showFRCSpecification",
+        "title": "MAUTILS: FRC SPECIFICATION"
       }
     ],
     "menus": {
@@ -50,6 +56,32 @@
           "command": "extension.createMAFile",
           "when": "editorLangId == 'java'",
           "group": "navigation"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "mautils",
+          "title": "MAutils",
+          "icon": "icons/button.png"
+        }
+      ],
+      "explorer": [
+        {
+          "id": "frcSpecification",
+          "title": "FRC Specification",
+          "icon": "markdown",
+          "treeView": "mautils"
+        }
+      ]
+    },
+    "views": {
+      "mautils": [
+        {
+          "id": "mautils",
+          "name": "FRC Specification",
+          "webview": true
         }
       ]
     }

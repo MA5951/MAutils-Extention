@@ -2,7 +2,8 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as cp from 'child_process';
-let myStatusBarItem: vscode.StatusBarItem;
+
+import { ItemType, Item, data } from './model';
 
 function autoInitiateMa() {
     cloneMAutils();
@@ -166,6 +167,32 @@ function createMAFile(uri: vscode.Uri) {
     });
 }
 
+class TreeDataProvider implements vscode.TreeDataProvider<Item> {
+    private _onDidChangeTreeData: vscode.EventEmitter<Item | undefined | null | void> = new vscode.EventEmitter<Item | undefined | null | void>();
+    readonly onDidChangeTreeData: vscode.Event<Item | undefined | null | void> = this._onDidChangeTreeData.event;
+
+    getTreeItem(element: Item): vscode.TreeItem {
+        return {
+        label: element.label,
+        description: element.description,
+        id: element.id,
+        collapsibleState: element.children ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
+        };
+    }
+
+    getChildren(element?: Item): Thenable<Item[]> {
+        if (!element) {
+        return Promise.resolve(data);
+        }
+
+        return Promise.resolve(element.children || []);
+    }
+
+    refresh(): void {
+        this._onDidChangeTreeData.fire();
+    }
+}
+
 export function activate(context: vscode.ExtensionContext) {
     let disposable = vscode.commands.registerCommand('MAutils-extention.extension.auto-initiate-Ma', autoInitiateMa);
     let disposable2 = vscode.commands.registerCommand('MAutils-extention.extension.clone-MAutils', cloneMAutils);
@@ -178,4 +205,14 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable3);
     context.subscriptions.push(disposable4);
     context.subscriptions.push(disposable5);
+
+    
+    const treeDataProvider = new TreeDataProvider();
+    vscode.window.createTreeView('mautils', { treeDataProvider });
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('mautils.refresh', () => {
+        treeDataProvider.refresh();
+        })
+    );
 }
