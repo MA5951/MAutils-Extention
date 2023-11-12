@@ -41,6 +41,10 @@
       {
         "command": "extension.showFRCSpecification",
         "title": "MAUTILS: FRC SPECIFICATION"
+      },
+      {
+        "command": "mautils.showDetails",
+        "title": "Show Details"
       }
     ],
     "menus": {

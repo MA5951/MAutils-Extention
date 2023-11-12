@@ -1,7 +1,7 @@
 // src/model.ts
 export enum ItemType {
-  Category = 'category',
-  Type = 'type',
+  Category,
+  Type,
 }
 
 export interface Item {
@@ -10,6 +10,7 @@ export interface Item {
   description?: string;
   type: ItemType;
   children?: Item[];
+  markdownPath?: string;
 }
 
 export const data: Item[] = [
@@ -18,8 +19,13 @@ export const data: Item[] = [
     label: 'Sensors',
     type: ItemType.Category,
     children: [
-      { id: 'sensor1', label: 'Sensor 1', type: ItemType.Type, description: 'Sensor 1 specification' },
-      { id: 'sensor2', label: 'Sensor 2', type: ItemType.Type, description: 'Sensor 2 specification' },
+      {
+        id: 'sensor1',
+        label: 'Sensor 1',
+        type: ItemType.Type,
+        description: 'Sensor 1 specification',
+        markdownPath: 'frcSpecification/sensor/sensor1.md',
+      },
       // Add more sensor types as needed
     ],
   },
@@ -28,8 +34,13 @@ export const data: Item[] = [
     label: 'Motors',
     type: ItemType.Category,
     children: [
-      { id: 'motor1', label: 'Motor 1', type: ItemType.Type, description: 'Motor 1 specification' },
-      { id: 'motor2', label: 'Motor 2', type: ItemType.Type, description: 'Motor 2 specification' },
+      {
+        id: 'motor1',
+        label: 'Motor 1',
+        type: ItemType.Type,
+        description: 'Motor 1 specification',
+        markdownPath: 'frcSpecification/motor/motor1.md',
+      },
       // Add more motor types as needed
     ],
   },
