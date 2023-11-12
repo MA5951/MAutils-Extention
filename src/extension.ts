@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as cp from 'child_process';
 
-import { ItemType, Item, data } from './model';
+import { HardwareInfoProvider, MotorItem, SensorItem, MotorProperty } from './hardwareInfo';
 
 function autoInitiateMa() {
     cloneMAutils();
@@ -167,112 +167,6 @@ function createMAFile(uri: vscode.Uri) {
     });
 }
 
-class MyTreeItem extends vscode.TreeItem {
-    [x: string]: any;
-    constructor(label: string, public readonly markdownPath: string, public readonly collapsibleState: vscode.TreeItemCollapsibleState) {
-        super(label, collapsibleState);
-    }
-}
-
-class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeItem> {
-    private _onDidChangeTreeData: vscode.EventEmitter<MyTreeItem | undefined | null> = new vscode.EventEmitter<MyTreeItem | undefined | null>();
-    onDidChangeTreeData: vscode.Event<MyTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
-    selectedNode: MyTreeItem | undefined; // Add this line
-
-    getTreeItem(element: MyTreeItem): vscode.TreeItem {
-        return element;
-    }
-
-    getSelectedNode(): MyTreeItem | undefined {
-        // Logic to get the currently selected node
-        // This might involve keeping track of the selected node in your class
-        return this.selectedNode;
-    }
-
-    getChildren(element?: MyTreeItem): vscode.ProviderResult<MyTreeItem[]> {
-        if (!element) {
-            // If no element is provided, return the root categories ("motors," "sensors," etc.)
-            return this.getRootCategories();
-        }
-
-        // If element has children, return them
-        if (element.children) {
-            return element.children;
-        }
-
-        return [];
-    }
-
-    private getRootCategories(): MyTreeItem[] {
-        // get the workspace folder
-        const workspaceFolders = vscode.workspace.workspaceFolders;
-        const frcSpecificationFolder = workspaceFolders ? path.join(workspaceFolders[0].uri.fsPath, "src", "main", "java", "com", "ma5951", "MAutils", "MA-extention-files", "frcSpecification") : '';
-
-        class MyTreeItem extends vscode.TreeItem {
-            constructor(label: string, public readonly markdownPath: string, public readonly collapsibleState: vscode.TreeItemCollapsibleState, public children?: MyTreeItem[]) {
-                super(label, collapsibleState);
-            }
-        }
-
-        const rootItems: MyTreeItem[] = [];
-
-        // Add your categories here
-        const motorsCategory = new MyTreeItem("motors", "", vscode.TreeItemCollapsibleState.Collapsed, [
-            new MyTreeItem("motor1", path.join(frcSpecificationFolder, "motor", "motor1.md"), vscode.TreeItemCollapsibleState.None),
-            new MyTreeItem("motor2", path.join(frcSpecificationFolder, "motor", "motor2.md"), vscode.TreeItemCollapsibleState.None),
-            // Add more motors...
-        ]);
-
-        const sensorsCategory = new MyTreeItem("sensors", "", vscode.TreeItemCollapsibleState.Collapsed, [
-            new MyTreeItem("sensor1", path.join(frcSpecificationFolder, "motor", "sensor1.md"), vscode.TreeItemCollapsibleState.None),
-            new MyTreeItem("sensor2", path.join(frcSpecificationFolder, "motor", "sensor2.md"), vscode.TreeItemCollapsibleState.None),
-            // Add more sensors...
-        ]);
-
-        // Add more categories...
-
-        rootItems.push(motorsCategory, sensorsCategory /*, ... */);
-
-        return rootItems;
-    }
-
-    private getRootItems(): MyTreeItem[] {
-        // Implement logic to return the root items
-        return [];
-    }
-
-    private getChildrenForElement(element: MyTreeItem): MyTreeItem[] {
-        // Implement logic to return the children based on the element
-        return [];
-    }
-
-    async resolveTreeItem(item: MyTreeItem): Promise<MyTreeItem> {
-        return item;
-    }
-
-    refresh(): void {
-        this._onDidChangeTreeData.fire(null);
-    }
-
-    showDetails(item: MyTreeItem): void {
-        const panel = vscode.window.createWebviewPanel(
-            'mautilsDetails',
-            `Details for ${item.label}`,
-            vscode.ViewColumn.One,
-            { enableScripts: true }
-        );
-    
-        if (item.markdownPath) {
-            const content = fs.readFileSync(item.markdownPath, 'utf8');
-            panel.webview.html = getWebViewContent(content);
-        } else {
-            panel.webview.html = `<div>No details available for ${item.label}</div>`;
-        }
-    }    
-}
-
-let treeDataProvider: MyTreeDataProvider;
-
 export function activate(context: vscode.ExtensionContext) {
     let disposable = vscode.commands.registerCommand('MAutils-extention.extension.auto-initiate-Ma', autoInitiateMa);
     let disposable2 = vscode.commands.registerCommand('MAutils-extention.extension.clone-MAutils', cloneMAutils);
@@ -286,76 +180,33 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable4);
     context.subscriptions.push(disposable5);
 
-    
-    treeDataProvider = new MyTreeDataProvider();
-    vscode.window.createTreeView('mautils', { treeDataProvider });
+
+    const motors: MotorItem[] = [
+        new MotorItem('Motor1', [
+            new MotorProperty('rpm', '1000'),
+            new MotorProperty('voltage', '12')
+        ]),
+        new MotorItem('Motor2', [
+            new MotorProperty('rpm', '2000'),
+            new MotorProperty('voltage', '16')
+        ])
+        // Add other motors...
+    ];
+
+    const sensors: SensorItem[] = [
+        new SensorItem('Sensor1', [
+            new MotorProperty('property1', 'value1'),
+            new MotorProperty('property2', 'value2')
+        ])
+        // Add other sensors...
+    ];
+
+    const hardwareInfoProvider = new HardwareInfoProvider(motors, sensors);
+    vscode.window.createTreeView('hardwareInfo', { treeDataProvider: hardwareInfoProvider });
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('mautils.refresh', () => {
-            treeDataProvider.refresh();
+        vscode.commands.registerCommand('hardwareInfo.refresh', () => {
+            hardwareInfoProvider.refresh();
         })
     );
-
-    treeDataProvider.onDidChangeTreeData((node) => {
-        // Update the webview with the selected item's markdown content
-        const selectedNode = treeDataProvider.getSelectedNode();
-        if (selectedNode && selectedNode.markdownPath) {
-            const content = fs.readFileSync(selectedNode.markdownPath, 'utf8');
-            const webviewPanel = vscode.window.createWebviewPanel(
-                'mautilsFRCSpecification',
-                `MAutils FRC Specification - ${selectedNode.label}`,
-                vscode.ViewColumn.Two,
-                { enableScripts: true }
-            );
-            webviewPanel.webview.html = getWebViewContent(content);
-        }
-    });
 }
-
-function getWebViewContent(filePath: string): string {
-    try {
-        const content = fs.readFileSync(filePath, 'utf8');
-        return `
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>MAutils FRC Specification</title>
-                <style>
-                    /* Add your styles here */
-                </style>
-            </head>
-            <body>
-                <div id="content">
-                    ${content}
-                </div>
-
-                <script>
-                    // Your existing script...
-                </script>
-            </body>
-            </html>`;
-    } catch (error) {
-        console.error(`Error reading file ${filePath}: ${(error as Error).message}`);
-        return `
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Error</title>
-            </head>
-            <body>
-                <div id="content">
-                    <p>Error reading file ${filePath}</p>
-                </div>
-            </body>
-            </html>`;
-    }
-}
-
-// Usage:
-
-const workspaceFolders = vscode.workspace.workspaceFolders;
-const frcSpecificationFolder = workspaceFolders ? path.join(workspaceFolders[0].uri.fsPath, "src", "main", "java", "com", "ma5951", "MAutils", "MA-extention-files", "frcSpecification") : '';
-const motorFilePath = path.join(frcSpecificationFolder, "motor", "motor1.md");
-const webviewContent = getWebViewContent(motorFilePath);
