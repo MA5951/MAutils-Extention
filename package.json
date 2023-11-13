@@ -3,7 +3,7 @@
   "displayName": "MAutils",
   "description": "An extention to go hand to hand with MAutils",
   "publisher": "MakersAssemble",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "icon": "icons/logo.png",
   "engines": {
     "vscode": "^1.84.0"
@@ -11,9 +11,7 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:hardwareInfo.refresh"
-  ],
+  "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [

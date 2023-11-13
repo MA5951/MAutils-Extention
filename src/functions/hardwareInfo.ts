@@ -2,7 +2,7 @@
 
 import * as vscode from 'vscode';
 
-export class MotorProperty {
+export class HardwareProperty {
     label: string;
     value: string;
 
@@ -14,9 +14,9 @@ export class MotorProperty {
 
 export class MotorItem {
     label: string;
-    properties: MotorProperty[];
+    properties: HardwareProperty[];
 
-    constructor(label: string, properties: MotorProperty[]) {
+    constructor(label: string, properties: HardwareProperty[]) {
         this.label = label;
         this.properties = properties;
     }
@@ -24,9 +24,9 @@ export class MotorItem {
 
 export class SensorItem {
     label: string;
-    properties: MotorProperty[];
+    properties: HardwareProperty[];
 
-    constructor(label: string, properties: MotorProperty[]) {
+    constructor(label: string, properties: HardwareProperty[]) {
         this.label = label;
         this.properties = properties;
     }
