@@ -1,8 +1,10 @@
 {
-  "name": "mautils-extention",
-  "displayName": "MAutils-Extention",
+  "name": "mautils",
+  "displayName": "MAutils",
   "description": "An extention to go hand to hand with MAutils",
-  "version": "0.0.1",
+  "publisher": "MakersAssemble",
+  "version": "0.0.9",
+  "icon": "icons/logo.png",
   "engines": {
     "vscode": "^1.84.0"
   },
@@ -14,30 +16,87 @@
   "contributes": {
     "commands": [
       {
-        "command": "MAutils-extention.extension.initiate-Ma",
-        "title": "Initiate MA"
-      },
-      {
-        "command": "MAutils-extention.extension.Hello-world",
-        "title": "Hello World"
-      },
-      {
         "command": "MAutils-extention.extension.auto-initiate-Ma",
-        "title": "Auto Initiate MA"
+        "title": "MAutils: Auto Initiate MA"
       },
       {
         "command": "MAutils-extention.extension.clone-MAutils",
-        "title": "Clone MAutils"
+        "title": "MAutils: Clone MAutils"
       },
       {
         "command": "MAutils-extention.extension.initiate-files-from-MAutils",
-        "title": "Initiate files from MAutils"
+        "title": "MAutils: Initiate files from MAutils"
       },
       {
         "command": "MAutils-extention.extension.pull-updates-to-MAutils",
-        "title": "Pull updates to MAutils"
+        "title": "MAutils: Pull updates to MAutils"
+      },
+      {
+        "command": "extension.createMAFile",
+        "title": "Create MA File",
+        "category": "MAutils"
+      },
+
+
+      {
+        "command": "hardwareInfo.refresh",
+        "title": "Refresh Hardware Info"
+      },
+      {
+        "command": "extension.createHardwareFile",
+        "title": "Create Hardware File",
+        "category": "Hardware"
       }
-    ]
+    ],
+    "menus": {
+      "activitybar": [
+        {
+          "id": "hardwareInfo", 
+          "title": "Hardware Info",
+          "icon": "icons/button.png",
+          "group": "navigation@0",
+          "submenu": "Hardware" 
+        }
+      ],
+      "context": [
+        {
+          "command": "hardwareInfo.refresh",
+          "when": "view == hardwareInfo" 
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "extension.createMAFile",
+          "when": "explorerResourceIsFolder",
+          "group": "navigation@0"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "extension.createMAFile",
+          "when": "editorLangId == 'java'",
+          "group": "navigation"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "hardwareInfo",
+          "title": "Hardware Info",
+          "icon": "icons/button.png"
+        }
+      ]
+    },
+    "views": {
+      "hardwareInfo": [
+        {
+          "id": "hardwareInfo",
+          "name": "Hardware Info",
+          "webview": true
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
