@@ -1,0 +1,38 @@
+<!-- webview.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAutils FRC Specification</title>
+    <style>
+        /* Add your styles here */
+    </style>
+</head>
+<body>
+    <div id="content">
+        <!-- Content will be dynamically populated here -->
+    </div>
+
+    <script>
+        const vscode = acquireVsCodeApi();
+
+        // Listen for messages from the extension
+        window.addEventListener('message', event => {
+            const message = event.data;
+
+            // Check if the message is for updating content
+            if (message.command === 'updateContent') {
+                const content = message.content;
+                updateContent(content);
+            }
+        });
+
+        function updateContent(content) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = content;
+        }
+    </script>
+</body>
+</html>

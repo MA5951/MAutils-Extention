@@ -3,7 +3,7 @@
   "displayName": "MAutils",
   "description": "An extention to go hand to hand with MAutils",
   "publisher": "MakersAssemble",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "icon": "icons/logo.png",
   "engines": {
     "vscode": "^1.84.0"
@@ -39,11 +39,31 @@
 
 
       {
-        "command": "extension.showFRCSpecification",
-        "title": "MAUTILS: FRC SPECIFICATION"
+        "command": "hardwareInfo.refresh",
+        "title": "Refresh Hardware Info"
+      },
+      {
+        "command": "extension.createHardwareFile",
+        "title": "Create Hardware File",
+        "category": "Hardware"
       }
     ],
     "menus": {
+      "activitybar": [
+        {
+          "id": "hardwareInfo", 
+          "title": "Hardware Info",
+          "icon": "icons/button.png",
+          "group": "navigation@0",
+          "submenu": "Hardware" 
+        }
+      ],
+      "context": [
+        {
+          "command": "hardwareInfo.refresh",
+          "when": "view == hardwareInfo" 
+        }
+      ],
       "explorer/context": [
         {
           "command": "extension.createMAFile",
@@ -62,25 +82,17 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "mautils",
-          "title": "MAutils",
+          "id": "hardwareInfo",
+          "title": "Hardware Info",
           "icon": "icons/button.png"
-        }
-      ],
-      "explorer": [
-        {
-          "id": "frcSpecification",
-          "title": "FRC Specification",
-          "icon": "markdown",
-          "treeView": "mautils"
         }
       ]
     },
     "views": {
-      "mautils": [
+      "hardwareInfo": [
         {
-          "id": "mautils",
-          "name": "FRC Specification",
+          "id": "hardwareInfo",
+          "name": "Hardware Info",
           "webview": true
         }
       ]
