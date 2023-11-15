@@ -4,6 +4,7 @@ import {autoInitiateMa, cloneMAutils, initiateFilesFromMAutils, pullUpdatesToMAu
 import { createMAFile } from './functions/createMAFile';
 import { HardwareInfoProvider } from './functions/hardwareInfo';
 import { motors, sensors } from './data';
+import { createMAsubsytem } from './functions/createMAsubsystem';
 
 export function activate(context: vscode.ExtensionContext) {
     let autoInitiateMaDisposable = vscode.commands.registerCommand('MAutils-extention.extension.auto-initiate-Ma', autoInitiateMa);
@@ -11,13 +12,15 @@ export function activate(context: vscode.ExtensionContext) {
     let initiateFilesFromMAutilsDisposable = vscode.commands.registerCommand('MAutils-extention.extension.initiate-files-from-MAutils', initiateFilesFromMAutils);
     let pullUpdatesToMAutilsDisposable = vscode.commands.registerCommand('MAutils-extention.extension.pull-updates-to-MAutils', pullUpdatesToMAutils);
     let createMAFileDisposable = vscode.commands.registerCommand('extension.createMAFile', createMAFile);
+    let createMAsubsystemDisposable = vscode.commands.registerCommand('extension.createMAsubsytem', createMAsubsytem);
 
     context.subscriptions.push(autoInitiateMaDisposable);
     context.subscriptions.push(cloneMAutilsDisposable);
     context.subscriptions.push(initiateFilesFromMAutilsDisposable);
     context.subscriptions.push(pullUpdatesToMAutilsDisposable);
     context.subscriptions.push(createMAFileDisposable);
-
+    context.subscriptions.push(createMAsubsystemDisposable);
+    
     const hardwareInfoProvider = new HardwareInfoProvider(motors, sensors);
     vscode.window.createTreeView('hardwareInfo', { treeDataProvider: hardwareInfoProvider });
 

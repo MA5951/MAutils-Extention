@@ -48,11 +48,15 @@ export function initiateFilesFromMAutils() {
     }
 
     const sourceDir = path.join(workspaceFolders[0].uri.fsPath, "src", "main", "java", "com", "ma5951", "MAutils", "MA-extention-files", "robot files");
+    
 
     if (!fs.existsSync(sourceDir)) {
         vscode.window.showErrorMessage(`Source directory '${sourceDir}' not found. Make sure the repository is cloned.`);
         return;
     }
+
+
+
 
     function copyFiles(source: string, target: string) {
         fs.readdirSync(source).forEach(file => {
