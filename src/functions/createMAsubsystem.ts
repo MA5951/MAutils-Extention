@@ -62,13 +62,23 @@ export function createMAsubsytem(uri: vscode.Uri) {
                          });
                         const templateFliePath = path.join(baseDir, "src", "main", "java", "com", "ma5951", "MAutils", "MA-extention-files", "example", `${selectedType}.java`);
                         const constantstemplateFliePath = path.join(baseDir, "src", "main", "java", "com", "ma5951", "MAutils", "MA-extention-files", "example", `Constants.java`);
+                        const portmapFilePath = path.join(baseDir, "src", "main", "java","frc", "robot", "PortMap.java")
                         
+                        if (fs.existsSync(portmapFilePath)) {
+                            let portmapcontent = fs.readFileSync(portmapFilePath).toString().split('\n');
+                            portmapcontent.pop();
+                            portmapcontent.join('\n');
+                            fs.writeFileSync(portmapFilePath, portmapcontent); // TODO
+
+                        } else {
+                            vscode.window.showErrorMessage(`Directory '${portmapFilePath}' not found. Make sure the PortMap file is created and in the right directory.`);
+                        }
                         if (fs.existsSync(templateFliePath) && fs.existsSync(constantstemplateFliePath) ){
                             const templateFileContent =  fs.readFileSync(templateFliePath, 'utf8');
                             const constantstemplateFileContent =  fs.readFileSync(constantstemplateFliePath, 'utf8');
                             const fileContent = templateFileContent.replace(/{{fileName}}/g, fileName);
                             const constantsfileContent = constantstemplateFileContent.replace(/{{fileName}}/g, fileName);
-
+                           
         
                             const filePath = path.join(baseDir, "src", "main", "java","frc", "robot", "subsystems", `${fileName}`, `${fileName}.java`);
                             const constantsfilePath = path.join(baseDir, "src", "main", "java","frc", "robot", "subsystems", `${fileName}`, `${fileName}Constants.java`);
@@ -76,6 +86,7 @@ export function createMAsubsytem(uri: vscode.Uri) {
                             if (!fs.existsSync(filePath)) {
                                 fs.writeFileSync(filePath, fileContent);
                                 fs.writeFileSync(constantsfilePath, constantsfileContent);
+
 
                                 vscode.window.showInformationMessage(`Subsystem '${fileName}.java' created successfully.`);
                             } else {
