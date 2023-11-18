@@ -45,7 +45,7 @@ export function createMAsubsytem(uri: vscode.Uri) {
                     vscode.window.showInformationMessage(`${fileName}`);
                     if (fileName) {
                         const subsytemFolderDir = path.join(baseDir, "src", "main", "java","frc", "robot", "subsystems", `${fileName}`);
-                        const commandFolderDir = path.join(baseDir, "src", "main", "java","frc", "robot", "commands", "Automation" ,`${fileName}`);
+                        const commandFolderDir = path.join(baseDir, "src", "main", "java","frc", "robot", "commands", "Automations" ,`${fileName}`);
                         fs.mkdir(subsytemFolderDir , { recursive: true }, e => {
                             if (e) {
                                 console.error(e);
@@ -60,15 +60,23 @@ export function createMAsubsytem(uri: vscode.Uri) {
                                 vscode.window.showErrorMessage('Unable to scan directory: ' + err);
                             }
                          });
-                        const templateFliePath = path.join(baseDir, "src", "main", "java", "com", "ma5951", "MAutils", "MA-extention-files", "example", `${selectedType}.java`);
+                        const templateFliePath = path.join(baseDir, "src", "main", "java", "com", "ma5951", "MAutils", "MA-extention-files", "example", "SubsystemsType" ,`${selectedType}.java`);
                         const constantstemplateFliePath = path.join(baseDir, "src", "main", "java", "com", "ma5951", "MAutils", "MA-extention-files", "example", `Constants.java`);
                         const portmapFilePath = path.join(baseDir, "src", "main", "java","frc", "robot", "PortMap.java")
-                        
+                        const portmapExampleFilePath = path.join(baseDir, "src", "main", "java", "com", "ma5951", "MAutils", "MA-extention-files", "example", "SubsystemsType" ,'PortMapExample.java');
+
                         if (fs.existsSync(portmapFilePath)) {
                             let portmapcontent = fs.readFileSync(portmapFilePath).toString().split('\n');
                             portmapcontent.pop();
-                            portmapcontent.join('\n');
-                            fs.writeFileSync(portmapFilePath, portmapcontent); // TODO
+                            let result = portmapcontent.join('\n');
+                            fs.writeFileSync(portmapFilePath, result); 
+                            const portmapexamplefileContent =  fs.readFileSync(portmapExampleFilePath, 'utf8');
+                            const portmapsubsystemfileContent = portmapexamplefileContent.replace(/{{fileName}}/g, fileName);
+                            fs.writeFile(portmapFilePath, portmapsubsystemfileContent , {flag: 'a'}, err => { 
+                                if(err) { 
+                                throw err; 
+                                console.log("The subsystem has benn writtern to the PortMap successfully."); 
+                                }}); 
 
                         } else {
                             vscode.window.showErrorMessage(`Directory '${portmapFilePath}' not found. Make sure the PortMap file is created and in the right directory.`);
