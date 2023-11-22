@@ -12,7 +12,7 @@ export function createMAFile(uri: vscode.Uri) {
     }
 
     const baseDir = maUtilsWorkspaceFolder.uri.fsPath;
-    
+    console.log(baseDir);
     
     // function readFiles():string[] {
     fs.readdir(path.join(baseDir, "src", "main", "java", "com", "ma5951", "MAutils", "MA-extention-files", "example"), function (err, files) {

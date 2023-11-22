@@ -36,6 +36,11 @@
         "title": "Create MA File",
         "category": "MAutils"
       },
+      {
+        "command": "extension.createMAsubsytem",
+        "title": "Create MA Subsystem",
+        "category": "MAutils"
+      },
 
 
       {
@@ -69,11 +74,21 @@
           "command": "extension.createMAFile",
           "when": "explorerResourceIsFolder",
           "group": "navigation@0"
+        } ,
+        {
+          "command": "extension.createMAsubsytem",
+          "when": "explorerResourceIsFolder",
+          "group": "navigation@0"
         }
       ],
       "editor/title/context": [
         {
           "command": "extension.createMAFile",
+          "when": "editorLangId == 'java'",
+          "group": "navigation"
+        },
+        {
+          "command": "extension.createMAsubsytem",
           "when": "editorLangId == 'java'",
           "group": "navigation"
         }
