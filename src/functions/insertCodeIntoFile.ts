@@ -33,11 +33,12 @@ function findClosingBraceIndex(content: string, startIndex: number): number {
     return -1;
 }
 
-function insertCodeIntoFile(filePath: string, targetName: string, codeLines: string[], insertLocation: InsertLocation, afterLocation?: string): void {
+export function insertCodeIntoFile(filePath: string, targetName: string, codeLines: string[], insertLocation: InsertLocation, afterLocation?: string): void {
     if (fs.existsSync(filePath)) {
         const fileContent = fs.readFileSync(filePath, 'utf8');
 
         const targetIndex = fileContent.indexOf(targetName);
+        console.log(targetIndex);
         if (targetIndex !== -1) {
             let insertionPoint: number;
 
@@ -45,7 +46,7 @@ function insertCodeIntoFile(filePath: string, targetName: string, codeLines: str
                 case InsertLocation.StartOfFunction:
                     insertionPoint = fileContent.indexOf('{', targetIndex) + 1;
                     break;
-
+                            
                 case InsertLocation.EndOfFunction:
                     insertionPoint = findClosingBraceIndex(fileContent, targetIndex);
                     break;
@@ -78,10 +79,11 @@ function insertCodeIntoFile(filePath: string, targetName: string, codeLines: str
             }
 
             const updatedContent =
-                fileContent.slice(0, insertionPoint) +
-                '\n' + codeLines.join('\n') +
-                fileContent.slice(insertionPoint);
+                fileContent.slice(0, insertionPoint) + codeLines.join('\n') + '\n' + '\n' +
+                fileContent.slice(insertionPoint) ;
 
+            console.log(updatedContent);
+            console.log(typeof updatedContent);
             fs.writeFileSync(filePath, updatedContent);
             vscode.window.showInformationMessage(`Code inserted into ${targetName} successfully.`);
         } else {
@@ -102,5 +104,6 @@ const codeToInsert = [
     '}',
 ];
 
-insertCodeIntoFile(filePath, targetName, codeToInsert, InsertLocation.AfterSpecificClass, afterLocation);
+//insertCodeIntoFile(filePath, targetName, codeToInsert, InsertLocation.AfterSpecificClass, afterLocation);
+
 // in this example, the code will be inserted in "example.java" in the "portmap" class right after the "ExampleSubsystem" class that is in the "PortMap" class
