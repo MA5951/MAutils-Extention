@@ -28,7 +28,6 @@ function findClosingBraceIndex(content: string, startIndex: number): number {
         }
         index++;
     }
-
     return -1;
 }
 
