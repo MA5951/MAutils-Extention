@@ -28,6 +28,8 @@ function findClosingBraceIndex(content: string, startIndex: number): number {
         }
         index++;
     }
+
+    vscode.window.showErrorMessage('Closing brace not found for the target function or class.');
     return -1;
 }
 
