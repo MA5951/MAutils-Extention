@@ -26,14 +26,13 @@ function findClosingBraceIndex(content: string, startIndex: number): number {
                 return index;
             }
         }
-
         index++;
     }
 
     return -1;
 }
 
-function insertCodeIntoFile(filePath: string, targetName: string, codeLines: string[], insertLocation: InsertLocation, afterLocation?: string): void {
+export function insertCodeIntoFile(filePath: string, targetName: string, codeLines: string[], insertLocation: InsertLocation, afterLocation?: string): void {
     if (fs.existsSync(filePath)) {
         const fileContent = fs.readFileSync(filePath, 'utf8');
 
