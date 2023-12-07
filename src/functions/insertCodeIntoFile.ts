@@ -32,61 +32,70 @@ function findClosingBraceIndex(content: string, startIndex: number): number {
 }
 
 export function insertCodeIntoFile(filePath: string, targetName: string, codeLines: string[], insertLocation: InsertLocation, afterLocation?: string): void {
-    if (fs.existsSync(filePath)) {
-        const fileContent = fs.readFileSync(filePath, 'utf8');
-
-        const targetIndex = fileContent.indexOf(targetName);
-        if (targetIndex !== -1) {
-            let insertionPoint: number;
-
-            switch (insertLocation) {
-                case InsertLocation.StartOfFunction:
-                    insertionPoint = fileContent.indexOf('{', targetIndex) + 1;
-                    break;
-
-                case InsertLocation.EndOfFunction:
-                    insertionPoint = findClosingBraceIndex(fileContent, targetIndex);
-                    break;
-
-                case InsertLocation.StartOfClass:
-                    insertionPoint = fileContent.indexOf('{', targetIndex) + 1;
-                    break;
-
-                case InsertLocation.EndOfClass:
-                    insertionPoint = findClosingBraceIndex(fileContent, targetIndex);
-                    break;
-
-                case InsertLocation.AfterSpecificFunction:
-                    const specificFunctionIndex = fileContent.indexOf(afterLocation!);
-                    insertionPoint = findClosingBraceIndex(fileContent, specificFunctionIndex);
-                    break;
-
-                case InsertLocation.AfterSpecificClass:
-                    const specificClassIndex = fileContent.indexOf(afterLocation!);
-                    insertionPoint = findClosingBraceIndex(fileContent, specificClassIndex);
-                    break;
-
-                case InsertLocation.AfterSpecificLine:
-                    insertionPoint = fileContent.indexOf(afterLocation!) + afterLocation!.length;
-                    break;
-
-                default:
-                    vscode.window.showErrorMessage('Invalid insert location');
-                    return;
-            }
-
-            const updatedContent =
-                fileContent.slice(0, insertionPoint) +
-                '\n' + codeLines.join('\n') +
-                fileContent.slice(insertionPoint);
-
-            fs.writeFileSync(filePath, updatedContent);
-            vscode.window.showInformationMessage(`Code inserted into ${targetName} successfully.`);
-        } else {
-            vscode.window.showErrorMessage(`Target ${targetName} not found in ${filePath}`);
+    try {
+        if (!fs.existsSync(filePath)) {
+            throw new Error(`File ${filePath} not found.`);
         }
-    } else {
-        vscode.window.showErrorMessage(`File ${filePath} not found.`);
+
+        const fileContent = fs.readFileSync(filePath, 'utf8');
+        const targetIndex = fileContent.indexOf(targetName);
+
+        if (targetIndex === -1) {
+            throw new Error(`Target ${targetName} not found in ${filePath}`);
+        }
+
+        let insertionPoint: number;
+
+        switch (insertLocation) {
+            case InsertLocation.StartOfFunction:
+                insertionPoint = fileContent.indexOf('{', targetIndex) + 1;
+                break;
+
+            case InsertLocation.EndOfFunction:
+                insertionPoint = findClosingBraceIndex(fileContent, targetIndex);
+                break;
+
+            case InsertLocation.StartOfClass:
+                insertionPoint = fileContent.indexOf('{', targetIndex) + 1;
+                break;
+
+            case InsertLocation.EndOfClass:
+                insertionPoint = findClosingBraceIndex(fileContent, targetIndex);
+                break;
+
+            case InsertLocation.AfterSpecificFunction:
+                const specificFunctionIndex = fileContent.indexOf(afterLocation!);
+                insertionPoint = findClosingBraceIndex(fileContent, specificFunctionIndex);
+                break;
+
+            case InsertLocation.AfterSpecificClass:
+                const specificClassIndex = fileContent.indexOf(afterLocation!);
+                insertionPoint = findClosingBraceIndex(fileContent, specificClassIndex);
+                break;
+
+            case InsertLocation.AfterSpecificLine:
+                insertionPoint = fileContent.indexOf(afterLocation!) + afterLocation!.length;
+                break;
+
+            default:
+                vscode.window.showErrorMessage('Invalid insert location');
+                return;
+        }
+
+        if (insertionPoint === undefined || insertionPoint < 0 || insertionPoint > fileContent.length) {
+            throw new Error('Invalid insertion point calculation.');
+        }
+
+        const updatedContent =
+            fileContent.slice(0, insertionPoint) +
+            '\n' + codeLines.join('\n') +
+            fileContent.slice(insertionPoint);
+
+        fs.writeFileSync(filePath, updatedContent);
+        vscode.window.showInformationMessage(`Code inserted into ${targetName} successfully.`);
+
+    } catch (error) {
+        vscode.window.showErrorMessage("Error inserting code into file");
     }
 }
 
