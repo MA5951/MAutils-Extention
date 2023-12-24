@@ -26,17 +26,16 @@ function findClosingBraceIndex(content: string, startIndex: number): number {
                 return index;
             }
         }
-
         index++;
     }
 
+    vscode.window.showErrorMessage('Closing brace not found for the target function or class.');
     return -1;
 }
 
 export function insertCodeIntoFile(filePath: string, targetName: string, codeLines: string[], insertLocation: InsertLocation, afterLocation?: string): void {
     if (fs.existsSync(filePath)) {
         const fileContent = fs.readFileSync(filePath, 'utf8');
-
         const targetIndex = fileContent.indexOf(targetName);
         console.log(targetIndex);
         if (targetIndex !== -1) {
@@ -88,9 +87,23 @@ export function insertCodeIntoFile(filePath: string, targetName: string, codeLin
             vscode.window.showInformationMessage(`Code inserted into ${targetName} successfully.`);
         } else {
             vscode.window.showErrorMessage(`Target ${targetName} not found in ${filePath}`);
+
         }
-    } else {
-        vscode.window.showErrorMessage(`File ${filePath} not found.`);
+
+        if (insertionPoint === undefined || insertionPoint < 0 || insertionPoint > fileContent.length) {
+            throw new Error('Invalid insertion point calculation.');
+        }
+
+        const updatedContent =
+            fileContent.slice(0, insertionPoint) +
+            '\n' + codeLines.join('\n') +
+            fileContent.slice(insertionPoint);
+
+        fs.writeFileSync(filePath, updatedContent);
+        vscode.window.showInformationMessage(`Code inserted into ${targetName} successfully.`);
+
+    } catch (error) {
+        vscode.window.showErrorMessage("Error inserting code into file");
     }
 }
 
