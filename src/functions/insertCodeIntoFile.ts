@@ -34,12 +34,13 @@ function findClosingBraceIndex(content: string, startIndex: number): number {
 }
 
 export function insertCodeIntoFile(filePath: string, targetName: string, codeLines: string[], insertLocation: InsertLocation, afterLocation?: string): void {
+    let insertionPoint: number | undefined;
     if (fs.existsSync(filePath)) {
         const fileContent = fs.readFileSync(filePath, 'utf8');
         const targetIndex = fileContent.indexOf(targetName);
         console.log(targetIndex);
         if (targetIndex !== -1) {
-            let insertionPoint: number;
+            
 
             switch (insertLocation) {
                 case InsertLocation.StartOfFunction:
@@ -90,10 +91,10 @@ export function insertCodeIntoFile(filePath: string, targetName: string, codeLin
 
         }
 
-        if (insertionPoint === undefined || insertionPoint < 0 || insertionPoint > fileContent.length) {
+        if ( insertionPoint === undefined || insertionPoint < 0 || insertionPoint > fileContent.length) {
             throw new Error('Invalid insertion point calculation.');
         }
-
+    try {
         const updatedContent =
             fileContent.slice(0, insertionPoint) +
             '\n' + codeLines.join('\n') +
@@ -106,17 +107,17 @@ export function insertCodeIntoFile(filePath: string, targetName: string, codeLin
         vscode.window.showErrorMessage("Error inserting code into file");
     }
 }
-
-// Example usage:
-const filePath = '/path/to/your/example.java';
-const targetName = 'PortMap';
-const afterLocation = 'ExampleSubsystem';
-const codeToInsert = [
-    'public static class NewSubsystem {',
-    '    // Code for the new subsystem',
-    '}',
-];
+}
+// // Example usage:
+// const filePath = '/path/to/your/example.java';
+// const targetName = 'PortMap';
+// const afterLocation = 'ExampleSubsystem';
+// const codeToInsert = [
+//     'public static class NewSubsystem {',
+//     '    // Code for the new subsystem',
+//     '}',
+// ];
 
 //insertCodeIntoFile(filePath, targetName, codeToInsert, InsertLocation.AfterSpecificClass, afterLocation);
 
-// in this example, the code will be inserted in "example.java" in the "portmap" class right after the "ExampleSubsystem" class that is in the "PortMap" class
+// in this example, the code will be inserted in "example.java" in the "portmap" class right after the "ExampleSubsystem" class that is in the "PortMap";
