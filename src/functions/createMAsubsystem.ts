@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
+import { InsertLocation, insertCodeIntoFile, insertCodeIntoFileFromExampleRegex } from './insertCodeIntoFile';
 
 
 
@@ -66,17 +67,7 @@ export function createMAsubsytem(uri: vscode.Uri) {
                         const portmapExampleFilePath = path.join(baseDir, "src", "main", "java", "com", "ma5951", "MAutils", "MA-extention-files", "example", "SubsystemsType" ,'PortMapExample.java');
 
                         if (fs.existsSync(portmapFilePath)) {
-                            let portmapcontent = fs.readFileSync(portmapFilePath).toString().split('\n');
-                            portmapcontent.pop();
-                            let result = portmapcontent.join('\n');
-                            fs.writeFileSync(portmapFilePath, result); 
-                            const portmapexamplefileContent =  fs.readFileSync(portmapExampleFilePath, 'utf8');
-                            const portmapsubsystemfileContent = portmapexamplefileContent.replace(/{{fileName}}/g, fileName);
-                            fs.writeFile(portmapFilePath, portmapsubsystemfileContent , {flag: 'a'}, err => { 
-                                if(err) { 
-                                throw err; 
-                                console.log("The subsystem has benn writtern to the PortMap successfully."); 
-                                }}); 
+                            insertCodeIntoFileFromExampleRegex(portmapFilePath, "PortMap", portmapExampleFilePath,"{{fileName}}", fileName ,InsertLocation.EndOfClass);
 
                         } else {
                             vscode.window.showErrorMessage(`Directory '${portmapFilePath}' not found. Make sure the PortMap file is created and in the right directory.`);
