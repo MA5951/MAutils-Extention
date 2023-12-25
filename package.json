@@ -3,10 +3,14 @@
   "displayName": "MAutils",
   "description": "An extention to go hand to hand with MAutils",
   "publisher": "MakersAssemble",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "icon": "icons/logo.png",
   "engines": {
     "vscode": "^1.84.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MA5951/MAutils-Extention"
   },
   "categories": [
     "Other"
