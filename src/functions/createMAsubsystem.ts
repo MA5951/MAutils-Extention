@@ -66,7 +66,7 @@ export function createMAsubsytem(uri: vscode.Uri) {
                         const portmapFilePath = path.join(baseDir, "src", "main", "java","frc", "robot", "PortMap.java")
                         const portmapExampleFilePath = path.join(baseDir, "src", "main", "java", "com", "ma5951", "MAutils", "MA-extention-files", "example", "SubsystemsType" ,'PortMapExample.java');
 
-                        if (fs.existsSync(portmapFilePath)) {
+                        if (fs.existsSync(portmapFilePath) && fs.existsSync(portmapExampleFilePath)) {
                             insertCodeIntoFileFromExampleRegex(portmapFilePath, "PortMap", portmapExampleFilePath,"{{fileName}}", fileName ,InsertLocation.EndOfClass);
 
                         } else {
