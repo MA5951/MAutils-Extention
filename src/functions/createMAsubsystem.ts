@@ -85,7 +85,9 @@ export function createMAsubsytem(uri: vscode.Uri) {
                             const constantsfilePath = path.join(baseDir, "src", "main", "java","frc", "robot", "subsystems", `${fileName}`, `${fileName}Constants.java`);
 
                             if (!fs.existsSync(filePath)) {
+                                filePath.concat(".java");
                                 fs.writeFileSync(filePath, fileContent);
+                                constantsfilePath.concat(".java");
                                 fs.writeFileSync(constantsfilePath, constantsfileContent);
 
 
