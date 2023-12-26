@@ -63,7 +63,7 @@ export function createMAsubsytem(uri: vscode.Uri) {
                          });
                         const templateFliePath = path.join(baseDir, "src", "main", "java", "com", "ma5951", "MAutils", "MA-extention-files", "example", "SubsystemsType" ,`${selectedType}.java`);
                         const constantstemplateFliePath = path.join(baseDir, "src", "main", "java", "com", "ma5951", "MAutils", "MA-extention-files", "example", `Constants.java`);
-                        const portmapFilePath = path.join(baseDir, "src", "main", "java","frc", "robot", "PortMap.java")
+                        const portmapFilePath = path.join(baseDir, "src", "main", "java","frc", "robot", "PortMap.java");
                         const portmapExampleFilePath = path.join(baseDir, "src", "main", "java", "com", "ma5951", "MAutils", "MA-extention-files", "example", "SubsystemsType" ,'PortMapExample.java');
 
                         if (fs.existsSync(portmapFilePath) && fs.existsSync(portmapExampleFilePath)) {
@@ -75,7 +75,9 @@ export function createMAsubsytem(uri: vscode.Uri) {
                         if (fs.existsSync(templateFliePath) && fs.existsSync(constantstemplateFliePath) ){
                             const templateFileContent =  fs.readFileSync(templateFliePath, 'utf8');
                             const constantstemplateFileContent =  fs.readFileSync(constantstemplateFliePath, 'utf8');
-                            const fileContent = templateFileContent.replace(/{{fileName}}/g, fileName);
+                            let fileContent = templateFileContent.replace(/{{fileName}}/g, fileName);
+                            let lfilenamelower = fileName.toLowerCase();
+                            fileContent = fileContent.replace(/{{fileNamelower}}/g, lfilenamelower);
                             const constantsfileContent = constantstemplateFileContent.replace(/{{fileName}}/g, fileName);
                            
         
