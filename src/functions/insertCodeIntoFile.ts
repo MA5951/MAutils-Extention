@@ -33,7 +33,7 @@ function findClosingBraceIndex(content: string, startIndex: number): number {
     return -1;
 }
 
-export function insertCodeIntoFile(filePath: string, targetName: string, codeLines: string[], insertLocation: InsertLocation, afterLocation?: string): void {
+export function insertCodeIntoFile(filePath: string, targetName: string, codeLines: string, insertLocation: InsertLocation, afterLocation?: string): void {
     let insertionPoint: number | undefined;
     if (fs.existsSync(filePath)) {
         const fileContent = fs.readFileSync(filePath, 'utf8');
@@ -79,7 +79,7 @@ export function insertCodeIntoFile(filePath: string, targetName: string, codeLin
             }
 
             const updatedContent =
-                fileContent.slice(0, insertionPoint) + codeLines.join('\n') + '\n' + '\n' +
+                fileContent.slice(0, insertionPoint) + codeLines + '\n' +
                 fileContent.slice(insertionPoint) ;
 
             console.log(updatedContent);
@@ -94,11 +94,10 @@ export function insertCodeIntoFile(filePath: string, targetName: string, codeLin
         if ( insertionPoint === undefined || insertionPoint < 0 || insertionPoint > fileContent.length) {
             throw new Error('Invalid insertion point calculation.');
         }
-    try {
+        try {
         const updatedContent =
-            fileContent.slice(0, insertionPoint) +
-            '\n' + codeLines.join('\n') +
-            fileContent.slice(insertionPoint);
+        fileContent.slice(0, insertionPoint) + codeLines + '\n' +
+        fileContent.slice(insertionPoint) ;
 
         fs.writeFileSync(filePath, updatedContent);
         vscode.window.showInformationMessage(`Code inserted into ${targetName} successfully.`);
@@ -107,6 +106,18 @@ export function insertCodeIntoFile(filePath: string, targetName: string, codeLin
         vscode.window.showErrorMessage("Error inserting code into file");
     }
 }
+}
+
+export function insertCodeIntoFileFromExample(filePath: string, targetName: string, path: string, insertLocation: InsertLocation, afterLocation?: string): void {
+    let codelines = fs.readFileSync(path, 'utf8');
+    insertCodeIntoFile(filePath, targetName, codelines, insertLocation, afterLocation);
+}
+
+export function insertCodeIntoFileFromExampleRegex(filePath: string, targetName: string, path: string, regexExpresion: string, regexValue: string,insertLocation: InsertLocation, afterLocation?: string): void {
+    let codelines = fs.readFileSync(path, 'utf8');
+    const regex = new RegExp(regexExpresion, "g");
+    codelines = codelines.replace(regex, regexValue)
+    insertCodeIntoFile(filePath, targetName, codelines, insertLocation, afterLocation);
 }
 // // Example usage:
 // const filePath = '/path/to/your/example.java';
