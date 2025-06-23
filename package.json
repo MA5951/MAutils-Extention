@@ -26,32 +26,9 @@
   "contributes": {
     "commands": [
       {
-        "command": "MAutils-extention.extension.auto-initiate-Ma",
-        "title": "MAutils: Auto Initiate MA"
+        "command": "MAutils-extention.extension.Init-Lib",
+        "title": "MAutils: Init Library"
       },
-      {
-        "command": "MAutils-extention.extension.clone-MAutils",
-        "title": "MAutils: Clone MAutils"
-      },
-      {
-        "command": "MAutils-extention.extension.initiate-files-from-MAutils",
-        "title": "MAutils: Initiate files from MAutils"
-      },
-      {
-        "command": "MAutils-extention.extension.pull-updates-to-MAutils",
-        "title": "MAutils: Pull updates to MAutils"
-      },
-      {
-        "command": "extension.createMAFile",
-        "title": "Create MA File",
-        "category": "MAutils"
-      },
-      {
-        "command": "extension.createMAsubsytem",
-        "title": "Create MA Subsystem",
-        "category": "MAutils"
-      },
-
 
       {
         "command": "hardwareInfo.refresh",
@@ -80,28 +57,10 @@
         }
       ],
       "explorer/context": [
-        {
-          "command": "extension.createMAFile",
-          "when": "explorerResourceIsFolder",
-          "group": "navigation@0"
-        } ,
-        {
-          "command": "extension.createMAsubsytem",
-          "when": "explorerResourceIsFolder",
-          "group": "navigation@0"
-        }
+        
       ],
       "editor/title/context": [
-        {
-          "command": "extension.createMAFile",
-          "when": "editorLangId == 'java'",
-          "group": "navigation"
-        },
-        {
-          "command": "extension.createMAsubsytem",
-          "when": "editorLangId == 'java'",
-          "group": "navigation"
-        }
+        
       ]
     },
     "viewsContainers": {
