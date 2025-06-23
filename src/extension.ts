@@ -5,6 +5,7 @@ import { createMAFile } from './functions/Old Files/createMAFile';
 import { HardwareInfoProvider } from './functions/Old Files/hardwareInfo';
 import { motors, sensors } from './data';
 import { createMAsubsytem } from './functions/Old Files/createMAsubsystem';
+import { InitLib } from './functions/InitMAutilsLib';
 
 export function activate(context: vscode.ExtensionContext) {
     // let autoInitiateMaDisposable = vscode.commands.registerCommand('MAutils-extention.extension.auto-initiate-Ma', autoInitiateMa);
@@ -13,6 +14,10 @@ export function activate(context: vscode.ExtensionContext) {
     // let pullUpdatesToMAutilsDisposable = vscode.commands.registerCommand('MAutils-extention.extension.pull-updates-to-MAutils', pullUpdatesToMAutils);
     // let createMAFileDisposable = vscode.commands.registerCommand('extension.createMAFile', createMAFile);
     // let createMAsubsystemDisposable = vscode.commands.registerCommand('extension.createMAsubsytem', createMAsubsytem);
+
+    let initLib = vscode.commands.registerCommand('MAutils-extention.extension.Init-Lib',InitLib);
+
+    context.subscriptions.push(initLib);
 
     // context.subscriptions.push(autoInitiateMaDisposable);
     // context.subscriptions.push(cloneMAutilsDisposable);
