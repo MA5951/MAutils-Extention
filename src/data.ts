@@ -1,4 +1,4 @@
-import { HardwareInfoProvider, MotorItem, SensorItem, HardwareProperty } from './functions/hardwareInfo';
+import { HardwareInfoProvider, MotorItem, SensorItem, HardwareProperty } from './functions/Old Files/hardwareInfo';
 
 export const motors: MotorItem[] = [
     new MotorItem('Falcon 500', [
