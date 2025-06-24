@@ -33,26 +33,35 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activate = activate;
-exports.deactivate = deactivate;
+exports.InitLib = InitLib;
+exports.addLib = addLib;
+const fs = __importStar(require("fs"));
+const path = __importStar(require("path"));
+const cp = __importStar(require("child_process"));
 const vscode = __importStar(require("vscode"));
-const InitMAutilsLib_1 = require("./functions/InitMAutilsLib");
-function activate(context) {
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "mautils" is now active!');
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with registerCommand
-    // The commandId parameter must match the command field in package.json
-    const disposable = vscode.commands.registerCommand('mautils.helloWorld', () => {
-        // The code you place here will be executed every time your command is executed
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World from MAutils!');
-    });
-    const initLib = vscode.commands.registerCommand('mautils.initLib', InitMAutilsLib_1.InitLib);
-    context.subscriptions.push(disposable);
-    context.subscriptions.push(initLib);
+function InitLib() {
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+        vscode.window.showErrorMessage('No workspace folder found. Please open a workspace before running this command.');
+        return;
+    }
+    const libDir = path.join(workspaceFolders[0].uri.fsPath, "src", "main", "java", "com", "MAutils");
+    addLib(libDir);
 }
-// This method is called when your extension is deactivated
-function deactivate() { }
-//# sourceMappingURL=extension.js.map
+function addLib(libDir) {
+    if (fs.existsSync(libDir)) {
+        vscode.window.showWarningMessage(`Directory '${libDir}' already exists. Skipping clone.`);
+        return;
+    }
+    if (!fs.existsSync(path.dirname(libDir))) {
+        fs.mkdirSync(path.dirname(libDir), { recursive: true });
+    }
+    cp.exec(`git clone https://github.com/MA5951/MAutilsPro.git`, { cwd: path.dirname(libDir) }, (err, stdout, stderr) => {
+        if (err) {
+            vscode.window.showErrorMessage(`Error cloning repository: ${err.message}`);
+            return;
+        }
+        vscode.window.showInformationMessage(`MAutils repository cloned successfully to '${libDir}'.`);
+    });
+}
+//# sourceMappingURL=InitMAutilsLib.js.map

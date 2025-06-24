@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
 
+import { InitLib } from './functions/InitMAutilsLib';
+
 export function activate(context: vscode.ExtensionContext) {
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
@@ -15,7 +17,10 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage('Hello World from MAutils!');
 	});
 
+	const initLib = vscode.commands.registerCommand('mautils.initLib', InitLib);
+
 	context.subscriptions.push(disposable);
+	context.subscriptions.push(initLib);
 }
 
 // This method is called when your extension is deactivated
