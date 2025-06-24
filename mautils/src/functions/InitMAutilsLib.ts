@@ -29,7 +29,7 @@ export function addLib(libDir: string) {
         fs.mkdirSync(path.dirname(libDir), { recursive: true });
     }
 
-    cp.exec(`git clone https://github.com/MA5951/MAutilsPro.git`, { cwd: path.dirname(libDir) }, (err, stdout, stderr) => {
+    cp.exec(`git clone --branch FilesForExtension --single-branch https://github.com/MA5951/MAutilsPro.git`, { cwd: path.dirname(libDir) }, (err, stdout, stderr) => {
         if (err) {
             vscode.window.showErrorMessage(`Error cloning repository: ${err.message}`);
             return;
