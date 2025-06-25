@@ -13,14 +13,7 @@
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
-      {
-        "command": "mautils.helloWorld",
-        "title": "Hello World"
-      },
-      {
-        "command": "mautils.helloWorld",
-        "title": "Hello World"
-      },
+
       {
         "command": "mautils.initLib",
         "title": "Initialize MAutils Library"

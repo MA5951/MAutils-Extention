@@ -38,19 +38,8 @@ exports.deactivate = deactivate;
 const vscode = __importStar(require("vscode"));
 const InitMAutilsLib_1 = require("./functions/InitMAutilsLib");
 function activate(context) {
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
     console.log('Congratulations, your extension "mautils" is now active!');
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with registerCommand
-    // The commandId parameter must match the command field in package.json
-    const disposable = vscode.commands.registerCommand('mautils.helloWorld', () => {
-        // The code you place here will be executed every time your command is executed
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World from MAutils!');
-    });
     const initLib = vscode.commands.registerCommand('mautils.initLib', InitMAutilsLib_1.InitLib);
-    context.subscriptions.push(disposable);
     context.subscriptions.push(initLib);
 }
 // This method is called when your extension is deactivated
